@@ -1,5 +1,23 @@
 # Architecture Review — Gaps & Findings
 
+> **Status update (re-checked against the current tree).** This review was written against an earlier version of the code. Since then:
+>
+> | # | Finding | Status |
+> |---|---------|--------|
+> | 1 | Hardcoded vault password | **Fixed** — random password generated on first launch, kept in the plugin-store (`stronghold.ts`) |
+> | 2 | API key falls back to plaintext localStorage | **Fixed** — `saveApiKey` fails closed; legacy keys are migrated and removed |
+> | 4 | `needsReindex` always true | **Fixed** — compares against `MemoryEntry.contentHash` |
+> | 6 | Unbounded audio buffer | **Obsolete** — cpal capture removed; audio is captured in the Swift sidecar |
+> | 7 | `Relaxed` atomic ordering | **Obsolete** — capture stop flag uses `Acquire`/`Release` |
+> | 17 | `FLUID_SIDECAR_BIN` arbitrary code execution | **Mitigated** — honored in debug builds only (`fluid.rs`) |
+> | 18 | No request timeouts/retries | **Fixed** — `llm-client.ts` has a 120 s timeout and 2 retries with backoff |
+> | 19 | SSE parsing duplicated | **Fixed** — shared `sse-parser.ts` |
+> | 21 | `buildMeetingContent` defined twice | **Fixed** — single `meeting-content.ts` |
+> | 13 | CSP | **Open, and broader now** — `connect-src` still only allows `https://api.deepseek.com` while the app supports many providers; `style-src` still has `'unsafe-inline'` |
+> | 9 (partial) | Error boundary | **Added** — `error-boundary.tsx` |
+>
+> Findings not listed above were not re-verified and should be treated as open. Line numbers and file references below are from the original review and may have shifted; references to `cpal`, `whisper`, and DeepSeek-only transport are historical.
+
 ## Severity Legend
 
 | Label | Meaning |

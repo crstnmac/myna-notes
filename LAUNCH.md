@@ -12,7 +12,7 @@
 
 1. Fresh launch → onboarding completes (mic optional, ASR ready)  
 2. New note → record mic (and optionally system audio) → stop → captions present  
-3. Settings → AI key → **Test Connection**  
+3. Settings → AI key → **Test Connection** (try a non-DeepSeek provider too; see the CSP note in `docs/architecture-review.md`)  
 4. **Enhance** → structured notes, toast for tags, action digest if enabled  
 5. Home → **Tags** filter → note appears; **Actions** / **People** non-empty when relevant  
 6. Quit and reopen → note, tags, actions still there  
@@ -106,7 +106,7 @@ Document your exact team ID and entitlements (`src-tauri/Entitlements.plist`) in
 ## Known non-blockers for 0.1
 
 - Package/crate ids may still say `meeting-notes` (storage keys unchanged on purpose)  
-- No automated E2E suite yet  
+- No automated test suite yet (unit or E2E)  
 - No auto-updater yet  
 - MCP is power-user only  
 

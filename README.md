@@ -24,6 +24,10 @@ Local meeting notes for macOS. Live transcription runs **on this Mac** (Apple Ne
 - **Calendar** — upcoming EventKit events, one-click start with attendees  
 - **Dictionary** — teach spellings; known people names are protected from bad rewrites  
 - **Recipes & share** — follow-up email, digests; mailto / export / Slack  
+- **Meeting briefs & live assist** — pre-meeting brief from past notes; live suggested questions and "what did I miss"  
+- **Knowledge graph & search** — decisions, actions and topics extracted per meeting, linked across meetings, searched with on-device embeddings + TF-IDF  
+- **Audio import** — transcribe (and diarize) existing recordings: mp3, m4a, wav, aac, aiff, caf, flac, ogg, mp4, mov  
+- **Desktop niceties** — menu-bar tray with recording status, global quick capture (⌘⇧N), command palette, call-app detection prompts  
 - **Local MCP** — optional snapshot for Cursor/Claude  
 
 ## Requirements
@@ -85,27 +89,31 @@ See **[LAUNCH.md](./LAUNCH.md)** for release packaging and optional paid signing
 2. `cd mcp-server && cargo build --release`  
 3. Point your MCP client at the binary + `MEETING_NOTES_SNAPSHOT` path (Settings → Share shows the data dir)  
 
-Tools: `list_meetings`, `get_meeting`, `search_meetings`, `list_folders` (tags), `list_open_actions`, `get_brief`.
+Tools: `list_meetings`, `get_meeting`, `search_meetings`, `list_folders` (tags), `list_open_actions`, `get_brief`, `get_transcript`, `list_people`, `get_meeting_citations`.
 
 ## Architecture
 
 ```
 React UI (Vite)  ◄── events / invokes ──►  Tauri (Rust)
-                                              │
+                                              │ stdin/stdout
                                          fluidasr (Swift)
-                                         Parakeet + mic/system tap
+                      mic + system tap → VAD → Parakeet v3 → diarization
 ```
 
-- `src/` — React app  
-- `src-tauri/` — shell, capture, calendar, MCP snapshot  
-- `fluid-sidecar/` — streaming ASR binary  
+- `src/` — React app (`components/` views, `lib/` AI, storage, recording logic)  
+- `src-tauri/` — shell: sidecar management, stream relay, calendar (EventKit), call detection, embeddings, MCP snapshot  
+- `fluid-sidecar/` — Swift binary that owns all audio capture and recognition  
+- `mcp-server/` — stdio MCP server over the snapshot file  
+
+Recording flow: the sidecar captures the mic and/or system audio, gates it with a VAD, and streams text back; Rust relays it to the UI as events. After you stop, a session WAV is diarized offline to add `Speaker N:` labels. Details, diagrams and the file map are in **[docs/architecture.md](./docs/architecture.md)**; known gaps are tracked in **[docs/architecture-review.md](./docs/architecture-review.md)**.
 
 ## Privacy
 
 | Data | Where |
 | --- | --- |
 | Audio → text | On-device ASR only |
-| Notes, tags, people | Local storage on this Mac |
+| Notes, tags, people | Local storage on this Mac, mirrored to an encrypted Stronghold vault |
+| API keys | Tauri secure store on this Mac; never written to plain localStorage |
 | Enhance / chat | Your AI provider, only with a configured key |
 
 ## License
