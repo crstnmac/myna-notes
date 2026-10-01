@@ -171,7 +171,7 @@ graph TB
     end
 
     subgraph "Transport"
-        LLMC[llm-client.ts<br/>OpenAI-compatible + Anthropic Messages<br/>120s timeout, 2 retries, SSE via sse-parser.ts]
+        LLMC[llm-client.ts<br/>OpenAI-compatible + Anthropic Messages<br/>120s timeout, 2 retries, SSE via sse-parser.ts<br/>requests sent by Rust via http.ts / tauri-plugin-http]
         PROV[ai-providers.ts<br/>provider registry + endpoints]
         KEY[Secure key store<br/>Tauri plugin-store]
         USAGE[token-usage.ts]
@@ -215,7 +215,9 @@ Data is held in `localStorage` (synchronous reads) and mirrored to an encrypted 
 
 Events emitted to the webview: `transcript-stream`, `audio-level`, `capture-error`, `session-wav`, `fluid-model-progress`, `quick-capture` (global shortcut ⌘⇧N). The webview emits `recording-state`, which `lib.rs` uses to update the tray tooltip.
 
-Plugins: opener, store, dialog, fs, log, stronghold, single-instance, window-state, global-shortcut. The tray menu has Show / Recording status / Quit; Quit stops capture and unloads the sidecars first.
+Plugins: opener, store, dialog, fs, http, log, stronghold, single-instance, window-state, global-shortcut. The tray menu has Show / Recording status / Quit; Quit stops capture and unloads the sidecars first.
+
+LLM and Slack-webhook requests are made through `tauri-plugin-http` (`src/lib/http.ts`), so the webview CSP keeps `connect-src 'self'`; the allowed hosts are scoped in `capabilities/default.json` (any `https://` host plus localhost, to support custom endpoints and Ollama).
 
 Debug builds honor `FLUID_SIDECAR_BIN` to point at a different sidecar binary.
 

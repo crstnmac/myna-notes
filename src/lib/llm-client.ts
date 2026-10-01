@@ -2,6 +2,7 @@
 // Back-compat: callDeepSeek / fetchDeepSeekStream re-exported as aliases.
 
 import { loadAISettings, loadApiKey } from "@/lib/storage"
+import { httpFetch } from "@/lib/http"
 import {
   getProvider,
   resolveAnthropicMessagesUrl,
@@ -178,7 +179,7 @@ async function callOpenAICompatible(
       : controller.signal
 
     try {
-      const res = await fetch(url, {
+      const res = await httpFetch(url, {
         method: "POST",
         headers,
         body: JSON.stringify(body),
@@ -401,7 +402,7 @@ async function fetchOpenAIStream(
       : controller.signal
 
     try {
-      const res = await fetch(url, {
+      const res = await httpFetch(url, {
         method: "POST",
         headers,
         body: JSON.stringify({
@@ -515,7 +516,7 @@ async function callAnthropic(
     : controller.signal
 
   try {
-    const res = await fetch(url, {
+    const res = await httpFetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -584,7 +585,7 @@ async function fetchAnthropicStream(
     ? anySignal([controller.signal, signal])
     : controller.signal
 
-  const res = await fetch(url, {
+  const res = await httpFetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

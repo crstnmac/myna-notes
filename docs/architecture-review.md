@@ -13,7 +13,7 @@
 > | 18 | No request timeouts/retries | **Fixed** — `llm-client.ts` has a 120 s timeout and 2 retries with backoff |
 > | 19 | SSE parsing duplicated | **Fixed** — shared `sse-parser.ts` |
 > | 21 | `buildMeetingContent` defined twice | **Fixed** — single `meeting-content.ts` |
-> | 13 | CSP | **Open, and broader now** — `connect-src` still only allows `https://api.deepseek.com` while the app supports many providers; `style-src` still has `'unsafe-inline'` |
+> | 13 | CSP | **Partly fixed** — LLM and webhook calls now go through `tauri-plugin-http` (Rust side), so webview `connect-src` stays `'self'`; the plugin's scope in `capabilities/default.json` allows any `https://` host plus localhost (needed for custom endpoints and Ollama). `style-src` still has `'unsafe-inline'` |
 > | 9 (partial) | Error boundary | **Added** — `error-boundary.tsx` |
 >
 > Findings not listed above were not re-verified and should be treated as open. Line numbers and file references below are from the original review and may have shifted; references to `cpal`, `whisper`, and DeepSeek-only transport are historical.

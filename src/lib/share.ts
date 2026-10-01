@@ -1,5 +1,6 @@
 import type { Meeting } from "@/types"
 import { loadSettings, loadSlackWebhookUrl } from "@/lib/storage"
+import { httpFetch } from "@/lib/http"
 
 function meetingMarkdown(title: string, body: string): string {
   let md = ""
@@ -59,7 +60,7 @@ export async function shareViaSlack(title: string, body: string): Promise<void> 
     throw new Error("Add a Slack Incoming Webhook URL in Settings → Share.")
   }
   const text = meetingMarkdown(title, body).slice(0, 35000)
-  const res = await fetch(url, {
+  const res = await httpFetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
