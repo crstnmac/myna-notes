@@ -9,6 +9,8 @@ export type AIProviderId =
   | "gemini"
   | "groq"
   | "openrouter"
+  | "mistral"
+  | "together"
   | "ollama"
   | "custom"
 
@@ -108,6 +110,26 @@ export const AI_PROVIDERS: Record<AIProviderId, AIProviderDef> = {
     keyPlaceholder: "sk-or-…",
     defaultModel: "openai/gpt-4.1-mini",
   },
+  mistral: {
+    id: "mistral",
+    label: "Mistral",
+    description: "Mistral models via La Plateforme",
+    baseUrl: "https://api.mistral.ai/v1",
+    apiStyle: "openai",
+    keyUrl: "https://console.mistral.ai/api-keys",
+    keyPlaceholder: "API key",
+    defaultModel: "mistral-small-latest",
+  },
+  together: {
+    id: "together",
+    label: "Together AI",
+    description: "Open models hosted by Together",
+    baseUrl: "https://api.together.xyz/v1",
+    apiStyle: "openai",
+    keyUrl: "https://api.together.ai/settings/api-keys",
+    keyPlaceholder: "API key",
+    defaultModel: "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+  },
   ollama: {
     id: "ollama",
     label: "Ollama (local)",
@@ -140,6 +162,8 @@ export const AI_PROVIDER_ORDER: AIProviderId[] = [
   "gemini",
   "groq",
   "openrouter",
+  "mistral",
+  "together",
   "ollama",
   "custom",
 ]

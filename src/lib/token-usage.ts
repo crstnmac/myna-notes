@@ -228,6 +228,8 @@ export function providerLabel(id: string): string {
       gemini: "Gemini",
       groq: "Groq",
       openrouter: "OpenRouter",
+      mistral: "Mistral",
+      together: "Together AI",
       ollama: "Ollama",
       custom: "Custom",
     }

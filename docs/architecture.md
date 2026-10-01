@@ -31,7 +31,7 @@ graph TB
         end
 
         subgraph "External APIs (opt-in, your key)"
-            LLM[LLM provider<br/>DeepSeek / OpenAI / Anthropic / xAI / Gemini / Groq / OpenRouter / Ollama / custom]
+            LLM[LLM provider<br/>DeepSeek / OpenAI / Anthropic / xAI / Gemini / Groq / OpenRouter / Mistral / Together / Ollama / custom]
         end
     end
 
@@ -184,7 +184,7 @@ graph TB
     LLMC --> PROV & KEY & USAGE
 ```
 
-Supported providers (`ai-providers.ts`): DeepSeek, OpenAI, xAI, Anthropic, Gemini, Groq, OpenRouter, Ollama, and a custom OpenAI-compatible endpoint. `deepseek-client.ts` is a back-compat alias layer over `llm-client.ts`.
+Supported providers (`ai-providers.ts`): DeepSeek, OpenAI, xAI, Anthropic, Gemini, Groq, OpenRouter, Mistral, Together AI, Ollama, and a custom OpenAI-compatible endpoint. `deepseek-client.ts` is a back-compat alias layer over `llm-client.ts`.
 
 Other AI-adjacent modules: `auto-tag.ts` (apply suggested tags), `catch-up.ts`, `chat-actions.ts`, `citations.ts`, `dictionary.ts` (spelling + protected names), `meeting-brief.ts`, `meeting-content.ts` (single source for assembling meeting text), `speakers.ts`.
 

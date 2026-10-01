@@ -202,6 +202,8 @@ export type AIProviderId =
   | "gemini"
   | "groq"
   | "openrouter"
+  | "mistral"
+  | "together"
   | "ollama"
   | "custom"
 

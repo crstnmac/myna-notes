@@ -34,7 +34,7 @@ Local meeting notes for macOS. Live transcription runs **on this Mac** (Apple Ne
 
 - macOS 14+ (Apple Silicon recommended; Fluid sidecar ships `aarch64-apple-darwin`)  
 - Xcode CLT for building the sidecar  
-- Optional: AI API key for Enhance / chat (DeepSeek, OpenAI, Anthropic, xAI/Grok, Gemini, Groq, OpenRouter, Ollama, or custom)  
+- Optional: AI API key for Enhance / chat (DeepSeek, OpenAI, Anthropic, xAI/Grok, Gemini, Groq, OpenRouter, Mistral, Together, Ollama, or custom)  
 
 ## Develop
 
